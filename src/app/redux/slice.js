@@ -1,7 +1,8 @@
-import { createSlice, current, nanoid } from '@reduxjs/toolkit';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
 
+// Load users from localStorage if available, otherwise start empty
 const initialState = {
-  users: [],
+  users: JSON.parse(localStorage.getItem("users")) || [],
   loading: false,
   error: null,
 };
@@ -10,24 +11,24 @@ const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
+    // Add a new user
     addUser: (state, action) => {
-        console.log("action", action);      
-       const data = {
+      const newUser = {
         id: nanoid(),
         name: action.payload,
       };
-      state.users.push(data);
-      let users = JSON.stringify(current(state.users));
+      state.users.push(newUser);
+      // Update localStorage with the new list
       localStorage.setItem("users", JSON.stringify(state.users));
-      localStorage.setItem("users", users);
-      console.log("localStorage", localStorage.getItem("users"));
-      // console.log("state", state);
     },
+
+    // Remove a user (correctly updates localStorage)
     removeUser: (state, action) => {
-        console.log("action", action);
+      // Filter out the user with matching ID
       state.users = state.users.filter(user => user.id !== action.payload);
+      // Update localStorage with the remaining users
+      localStorage.setItem("users", JSON.stringify(state.users));
     }
-    
   }
 });
 
