@@ -35,6 +35,9 @@ export default function AddUser() {
       <Link href="/todolist" className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
         Todo List
       </Link>
+      <Link href="/apiusers" className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition">
+        API Users
+      </Link>
     </div>
   );
 }

@@ -1,12 +1,22 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
+import { create } from 'domain';
 
 // Load users from localStorage if available, otherwise start empty
 const initialState = {
+  userAPIData: [],
   users: JSON.parse(localStorage.getItem("users")) || [],
   loading: false,
   error: null,
 };
 
+export const fetchApiUsers = createAsyncThunk("users/fetchApiUsers", async () => {
+  console.log("Fetching API users...");
+  
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const data = await response.json();
+  return data;
+});
+ 
 const userSlice = createSlice({
   name: 'users',
   initialState,
@@ -29,7 +39,20 @@ const userSlice = createSlice({
       // Update localStorage with the remaining users
       localStorage.setItem("users", JSON.stringify(state.users));
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchApiUsers.fulfilled, (state,action) => {
+        console.log("API users fetched successfully:", action.payload);
+        
+        state.loading = false,
+        state.userAPIData = action.payload,
+        state.error = null;
+       
+      })
+     
   }
+
 });
 
 export const { addUser, removeUser } = userSlice.actions;
