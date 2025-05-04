@@ -32,6 +32,9 @@ export default function AddUser() {
       <Link href="/removeuser" className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
         Remove User
       </Link>
+      <Link href="/todolist" className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+        Todo List
+      </Link>
     </div>
   );
 }
